@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+<head>
+    <!-- Displayed in browser tab -->
+    <title>Loan Wolf | The Code</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/AppIcon_browser-tab.png">
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+    <!-- Prism CSS -->
+    <link rel="stylesheet" href="/css/prism.css">
+
+    <!-- Custom style sheet -->
+    <link rel="stylesheet" href="/css/site.css">
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/5db21ba9c6.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/site.css">
+
+</head>
+
+<body class="d-flex flex-column h-100" style="background-color:lightgray">
+
+    <!-- Nav bar at top of page -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/index.html"><img src="img/AppIcon_small.png" width="40"
+                    class="d-inline-block me-2"> Loan Wolf</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <!-- Items within nav bar -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="app.html">The App</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="code.html">The Code</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://mattlane.netlify.app" target="_blank">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-shrink-0">
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-9">
+                    <div class="row">
+                        <div class="col border-bottom border-dark text-center">
+                            <h1>How does Loan Wolf work?</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mt-3">
+                            <pre><code class="language-javascript">
+                            //CONTROLLER FUNCTION
+
+                            function getValues() {
+                            
+                                //Get "Fizz" and "Buzz" values from the user via the fields on the app page.
+                                let fizzValue = document.getElementById("fizzValue").value;
+                                let buzzValue = document.getElementById("buzzValue").value;
+                            
+                                //Ensure that the input is limited to numbers (parse). 
+                                fizzValue = parseInt(fizzValue);
+                                buzzValue = parseInt(buzzValue);
+                            
+                                //Ensure that the numbers are interpreted as integers.
+                                if (Number.isInteger(fizzValue) && Number.isInteger(buzzValue)) {
+                            
+                                    //LOGIC FUNCTION
+                                    //Call the fizzBuzz function and write the values to the screen
+                                    let fbArray = fizzBuzz(fizzValue, buzzValue)
+                                    displayData(fbArray);
+                                } else {
+                                    alert("You must use numbers")
+                                }
+                            }
+                            
+                            //Do FizzBuzz (aka call displayData and write the values to the table within the app)
+                            
+                            function fizzBuzz(fizzValue, buzzValue) {
+                            
+                                //Initialize the returnArray
+                                let returnArray = [];
+                            
+                                //Write a loop from 1 to 100 and run 3 checks against the values within
+                                for (let i = 1; i &lt;= 100; i++) {
+                            
+                                    //Check 1: Divisible by BOTH 3 and 5? If so, push "FizzBuzz" into an array instead of a number
+                                    if (i % fizzValue == 0 && i % buzzValue == 0) {
+                                        returnArray.push('FizzBuzz');
+                            
+                                        //Check 2: Divisible by 3? If so, push "Fizz" into an array instead of a number
+                                    } else if (i % fizzValue == 0) {
+                                        returnArray.push('Fizz');
+                            
+                                        //Check 3: Divisible by 5? If so, push "Buzz" into an array instead of a number
+                                    } else if (i % buzzValue == 0) {
+                                        returnArray.push('Buzz');
+                            
+                                        //If none of the 3 checks above return a value of true, push a number into the array
+                                    } else {
+                                        returnArray.push(i);
+                                    }
+                                }
+                                return returnArray;
+                            }
+                            
+                            //VIEW FUNCTION
+                            
+                            //Loop over the array and create a table row for each item.
+                            
+                            function displayData(fbArray) {
+                            
+                                //Get the table body element from the HTML
+                                let tableBody = document.getElementById("results");
+                            
+                                //Get the template row
+                                let templateRow = document.getElementById("fbTemplate");
+                            
+                                //Clear table
+                                tableBody.innerHTML = "";
+                            
+                                for (let i = 0; i &lt; fbArray.length; i += 5) {
+                            
+                                    let tableRow = document.importNode(templateRow.content, true)
+                            
+                                    //Obtain data from table rows then put into an array
+                                    let rowCols = tableRow.querySelectorAll("td");
+                                    rowCols[0].textContent = fbArray[i];
+                                    rowCols[1].textContent = fbArray[i + 1];
+                                    rowCols[2].textContent = fbArray[i + 2];
+                                    rowCols[3].textContent = fbArray[i + 3];
+                                    rowCols[4].textContent = fbArray[i + 4];
+                            
+                                    tableBody.appendChild(tableRow);
+                                }
+                            
+                                //Add all the rows to the table.
+                            
+                            }
+                        </code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="row mt-5">
+                        <p></p>
+                        <p>As with similar coding challenges in this series, the JavaScript you see to the left is
+                            separated
+                            into three basic
+                            functions:</p>
+                        <p><strong>-</strong> Controller Function</p>
+                        <p><strong>-</strong> Logic Function</p>
+                        <p><strong>-</strong> View Function</p>
+                        <p></p>
+                        <p>We start by establishing a relationship between our JavaScript code and the empty fields that
+                            reside on the app page; this is done by creating variables for both
+                            <strong>fizzValue</strong>
+                            and <strong>buzzValue</strong> that give the user's inputs a static identifier that can be
+                            used
+                            in our code. Next, we ensure that the values that the user places in those fields are
+                            numeric,
+                            and that the numbers are interpreted as <i>integers</i> as opposed to plain text.</p>
+                        <p></p>
+                        <p>The <strong>logic</strong> function calls on the function named <strong>fizzBuzz</strong>,
+                            which
+                            is responsible for evaluating the user's input. A <strong>for</strong> loop runs three
+                            checks
+                            against that input. Since the code is executed sequentially from the top down, it is
+                            important
+                            to <i>first</i> define our <strong>FizzBuzz</strong> array (aka any number in the table
+                            divisible by both the user's chosen first number as well as the second) in order to prevent
+                            unintended appearances of the words "Fizz" or "Buzz" in fields that do not meet the
+                            divisible-by-both-numbers criteria. A final <strong>else</strong> statement instructs our
+                            code
+                            to simply push numerical values to the resulting table on the app page if they are not
+                            evenly
+                            divisible by either of the user's chosen numbers.</p>
+                        <p></p>
+                        <p>The <strong>view</strong> function is what is ultimately responsible for outputting the data
+                            to
+                            the aforementioned table. To make the table more readable to the user, the digits are spread
+                            across five rows by way of five separate <strong>rowCols</strong>. We also included
+                            instruction
+                            to clear the table each time the user clicks the button in the app. This prevents multiple
+                            tables from being stacked atop one another in the event that the user attempts to use the
+                            app
+                            multiple times consecutively.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Page footer -->
+    <footer class="footer mt-auto py-3 bg-dark">
+        <div class="container-fluid text-center text-light">
+            <div class="row row-cols-1 row-cols-lg-3 gy-2">
+
+                <div
+                    class="col col d-flex align-items-center justify-content-center justify-content-lg-center order-last order-lg-first">
+                    <div>
+                        <span class="text-muted">&copy2021</span> Matt Lane | matthewjlane.47@gmail.com
+                    </div>
+                </div>
+
+                <div class="col d-flex align-items-center justify-content-center justify-content-lg-center">
+                    <img src="/img/MattLane(white).png" height="35">
+                </div>
+
+                <div class="col d-flex align-items-center justify-content-center justify-content-lg-end">
+                    <div class="row">
+                        <div class="col linkedin social"><a href="#"><i class="fab fa-linkedin fa-2x"></i></a></div>
+                        <div class="col github social"><a href="#"><i class="fab fa-github fa-2x"></i></a></div>
+                        <div class="col twitter social"><a href="#"><i class="fab fa-twitter fa-2x"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
+    </script>
+
+    <!-- Scripts to drive JavaScript behavior -->
+    <script src="/js/prism.js"></script>
+    <script src="/js/site.js"></script>
+
+</body>
+
+</html>

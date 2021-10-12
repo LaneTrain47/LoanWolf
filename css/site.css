@@ -1,0 +1,61 @@
+main>.container {
+    padding: 60px 15px 0px;
+}
+
+/* Minimum height value (targets ID 'content') */
+#content {
+    min-height: 90vh;
+}
+
+footer {
+    background-color: var(--dark-color);
+}
+
+footer .social>a {
+    color: var(--white-color);
+}
+
+footer .linkedin>a:hover {
+    opacity: .9;
+    color: #1163bf;
+}
+
+footer .github>a:hover {
+    opacity: .9;
+    color: #7a319a;
+}
+
+footer .twitter>a:hover {
+    opacity: .9;
+    color: #1da1f3;
+}
+
+.even {
+    font-weight: bold
+}
+
+.background-color {
+    background-color: #ebb33a;
+    color: black
+}
+
+.background-color:hover {
+    background-color: #cd2613;
+    color: white;
+}
+
+.color-JavaScriptYellow {
+    color: #f7df1e
+}
+
+.color-BootStrapPurple {
+    color: #7952b3
+}
+
+.color-HTMLOrange {
+    color: #e96228
+}
+
+.color-CSSBlue {
+    color: #2a93e7
+}
