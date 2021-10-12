@@ -1,45 +1,129 @@
-//Mortgage Calculator
-//Step 1 - Get User inputs - this will access the DOM and call all other functions
-function getValues() {
-    let loanAmount = document.getElementById("someId").value;
+//Calculate the payment for the loan
+function calcPayment(amount, rate, term) {
+    return (amount * rate) / (1 - Math.pow(1 + rate, -term));
+}
 
-    let term = document.getElementById("anotherId").value;
+//calculate the interest for the current balance of the loan
+function calcInterest(balance, rate) {
+    return balance * rate;
+}
 
-    let interestRate = document.getElementById("thirdId").value;
+function calcRate(rate) {
+    return rate = rate / 1200;
+}
 
-    let calculatedRate = calcRate(interestRate);
+//get values
+function buildSchedule() {
+    let loanAmount = Number(document.getElementById("loanAmount").value);
+    let rate = parseFloat(document.getElementById("loanRate").value);
 
-    let payment = calcPayment(loanAmount, calculatedRate, term);
+    //convert rate to a monthly interest rate
+    rate = calcRate(rate);
 
-    let totalPayments = calcPaymentSchedule(loanAmount, calculatedRate, term, payment);
+    //Assume monthly input
+    let term = parseInt(document.getElementById("loanTerm").value);
+    let payment = calcPayment(loanAmount, rate, term);
+    let payments = getPayments(loanAmount, rate, term, payment);
 
-    displayData(totalPayments);
+    displayData(payments, loanAmount, payment);
+}
+
+//Build the amortization schedule
+function getPayments(amount, rate, term, payment) {
+    //set up an array to hold payments
+    let payments = [];
+
+    //set up some variables to hold the value in the schedule
+
+    let balance = amount;
+    let totalInterest = 0;
+    let monthlyPrincipal = 0;
+    let monthlyInterest = 0;
+    let monthlyTotalInterest = 0;
+
+    //create a loop for each month of the loan term
+    for (month = 1; index <= term; month++) {
+        //calculate the payment and interest
+        monthlyInterest = calcInterest(balance, rate);
+        totalInterest += monthlyInterest;
+        monthlyPrincipal = payment - monthlyInterest;
+        balance = balance - monthlyPrincipal;
+
+        //add the details to an object
+        let curPayment = {
+            month: month,
+            payment: payment,
+            principal: monthlyPrincipal,
+            interest: monthlyInterest,
+            totalInterest: totalInterest,
+            balance: balance
+        }
+
+        payments.push(curPayment);
+
+    }
+
+    return payments;
 
 }
 
-//Step 2 - Calculate the interest rate - this is the division by 1200 from the PDF
-function calcRate() {}
+//display the data to the user
+function displayData(payments, loanAmount, payment) {
+    //get the table we are going to add to.
+    let tableBody = document.getElementById("scheduleBody");
+    let template = document.getElementById("scheduleTemplate");
 
-//Step 3 - Calculate monthly payment - Amount times rate divided by the complicated math from the PDF Math.pow()
-function calcPayment() {}
+    //clear the table of previous calculations
+    tableBody.innerHTML = "";
 
-//Step 3.5 - Calculate the interest rate based on the current balance in rate from step 2
-//This function is called in Step 4, but you need to build it first
-//Calculates interest per payment
-function calcInterest() {}
+    for (let i = 0; i < payments.length; i++) {
+        //get a clone row template
+        payRow = template.content.cloneNode(true);
+        //grab only the columns in the template
+        paycols = payRow.querySelectorAll("td");
 
-//Step 4 - Now that we know the rate and monthly payment we build out our payment schedule
-//This is the big function of the application - create your object in this function
-//let obj = {
-//     month:
-//     payment:
-//     principal:
-//     interest:
-//     totalInterest:
-//     balance:
-// }
-function calcPaymentSchedule() {}
+        //build the row
+        //we know that there are six columns in our template
+        paycols[0].textContent = payments[i].month;
+        paycols[1].textContent = currencyFormatter.format(payments[i].payment.toFixed(2));
+        paycols[2].textContent = currencyFormatter.format(payments[i].principal.toFixed(2));
+        paycols[3].textContent = currencyFormatter.format(payments[i].interest.toFixed(2));
+        paycols[4].textContent = currencyFormatter.format(payments[i].totalInterest.toFixed(2));
+        paycols[5].textContent = currencyFormatter.format(payments[i].balance.toFixed(2));
 
-//Step 5 - Display all of the calculated information
-//Use the template structure from FizzBuzz to output your data
-function displayData() {}
+        //append to the table
+        tableBody.appendChild(payRow);
+    }
+
+    //total interest is in the last row of the payments array.
+    let totalInterest = payments[payments.length - 1].totalInterest;
+    //calculate total cost
+    let totalCost = Number(loanAmount) + totalInterest;
+
+    //Build out the summary area
+    let labelPrincipal = document.getElementById("totalPrincipal");
+    labelPrincipal.innerHTML = Number(loanAmount).toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+    });
+
+    let labelInterest = document.getElementById("totalInterest");
+    labelInterest.innerHTML = Number(totalInterest).toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+    });
+
+    let paymentdiv = document.getElementById("payment");
+    paymentdiv.innerHTML = Number(payment).toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+    });
+
+    let totalCostDiv = document.getElementById("totalCost");
+
+    totalCostDiv.innerHTML = Number(totalCost).toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+    });
+
+}
